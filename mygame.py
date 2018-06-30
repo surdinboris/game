@@ -1,4 +1,56 @@
-variants=('Rock', 'Paper', 'Scissors')
+
+
+
+
+variants={1:'Rock', 2:'Paper', 3:'Scissors'}
+
+wons=[[1,3],[2,1],[3,2]]
+
+results={}
+def startgame():
+    curlevel=0
+    players = (input("Please enter first player's name "),
+               input("Please enter second player's name "))
+
+    def startlevel(levelnum, players):
+        #helper - returns a player ho won
+        def checkValidity(choises):
+            #check validity of inputs
+            for ch in list(choises):
+                if int(choises[ch]) not in variants:
+                    print("{},you wrong. Next time please be careful and choose a proper option".format(ch))
+                    choises[ch]='disqualified'
+            #updating results
+            return{levelnum:choises}
+
+
+            #for won, loose in wons:
+
+            #return
+
+        #starting level execution
+        print("-=Level %s=-" %levelnum)
+        question="{}, please enter your choice \n1-Rock,  2-Paper, 3-Scissors\t"
+        #retrieving users choises
+        choises = {pl:input(question.format(pl)) for pl in players}
+        #appending results in table
+        results.update(checkValidity(choises))
+
+        print(results)
+        #return(checkWhoWon(choises))
+
+
+    for n in range(1,3):
+        startlevel(n,players)
+
+
+
+startgame()
+
+
+
+
+
 
 def checkvars(var1,var2):
     if var1 or var2 not in variants:
@@ -26,11 +78,3 @@ def checkvars(var1,var2):
     else:
         return "Something went wrong - combination evaluation error"
 
-#assigning players names
-players={input("Please enter first player's name ") : 0,
-input("Please enter second player's name "): 0 }
-
-#turn execution
-for player in players.keys():
-    result ={}
-    checkvars(var1, var2)
