@@ -4,10 +4,12 @@
 
 variants={1:'Rock', 2:'Paper', 3:'Scissors'}
 
-wons=[[1,3],[2,1],[3,2]]
+wons=((1,3),(2,1),(3,2))
+
 
 results={}
-def startgame():
+
+def game():
     curlevel=0
     players = (input("Please enter first player's name "),
                input("Please enter second player's name "))
@@ -22,30 +24,36 @@ def startgame():
                     choises[ch]='disqualified'
             #updating results
             return{levelnum:choises}
-
-
-            #for won, loose in wons:
-
-            #return
-
         #starting level execution
         print("-=Level %s=-" %levelnum)
         question="{}, please enter your choice \n1-Rock,  2-Paper, 3-Scissors\t"
         #retrieving users choises
-        choises = {pl:input(question.format(pl)) for pl in players}
-        #appending results in table
+        choises = {pl:int(input(question.format(pl))) for pl in players}
+        #appending results
         results.update(checkValidity(choises))
-
-        print(results)
-        #return(checkWhoWon(choises))
-
 
     for n in range(1,3):
         startlevel(n,players)
 
+    def resultParse(results):
+        levelres={}
+        #return who won
+        def retrRes(choises):
+            print("starting to verify values", choises[players[0]], "vs", choises[players[1]])
 
+            if choises[players[0]] == choises[players[1]]:
+                return(" no one wons")
+            elif tuple([choises[players[0]],choises[players[1]]]) in wons:
+                return(players[0]+ " wons")
+            elif tuple([choises[players[1]],choises[players[0]]]) in wons:
+                return(players[1]+ " wons")
+            return
+        for level in results:
+            levelres[level]=retrRes(results[level])
+        print(levelres)
+    resultParse(results)
 
-startgame()
+game()
 
 
 
