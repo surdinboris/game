@@ -2,10 +2,11 @@
 debugActive = False
 #won combinations
 wons=((1,3),(2,1),(3,2))
+#defining of signs-identifiers
 signs={1:"Rock", 2:"Paper", 3:"Scissors"}
-results={}
 
-#debug prints
+results={}
+#helper for debug prints
 def debug(prn):
     if debugActive:
         print(prn)
@@ -73,14 +74,19 @@ def game():
                     print("The winner is %s" % players[0])
                 else:
                     print("The winner is %s" % players[1])
-            else: print("The winner is no one")
+            else: print("The winner is: no one")
+
             print("Summary {} rounds".format(len(levelres)))
             print("{} won {} rounds, and {} won in {} rounds"
                   .format(players[0],count[players[0]],players[1],count[players[1]]))
-            weapStat={s:{players[0]:0,players[1]:0} for s in signs}
+
+            #displaying chises
+            #preparing structure for weapon statistics
+            weapStat = {s: {players[0]: 0, players[1]: 0} for s in signs}
             for res in results:
-                print("Round {} choises: {} choosed {} and {} choosed {}, {} won"
+                print("Round {:<1} choises: {:<3} choosed {:<9} and {:<3} choosed {:<9}  {} won"
                       .format(res,players[0],signs[results[res][players[0]]],players[1],signs[results[res][players[1]]],levelres[res]))
+
                 #collecting per player weapon statistics
                 for pl in players:
                     plWeap=results[res][pl]
@@ -88,7 +94,7 @@ def game():
             debug(weapStat)
             for weap in weapStat:
                 for player in weapStat[weap]:
-                    print("The weapon {} was used {} times by {}".format(signs[weap],weapStat[weap][player],player ))
+                    print("The weapon {:<9} was used {:<2} times by {:^5}".format(signs[weap],weapStat[weap][player],player ))
         printRes(levelres, results)
 
     resultParse(results)
