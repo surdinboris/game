@@ -1,12 +1,15 @@
-run = True
 debugActive = False
-levcountr=0
+
+
 #won combinations
 wons=((1,3),(2,1),(3,2))
 #defining of signs-identifiers
 signs={1:"Rock", 2:"Paper", 3:"Scissors"}
-
+#results of game levels
 results={}
+#counter for level assignment\execution control
+levcountr=1
+
 #helper for debug prints
 def debug(prn):
     if debugActive:
@@ -57,25 +60,25 @@ def game(levcountr):
         def printRes(levelres,results):
             debug(levelres)
             #calculating results
-            count={}
+            summary={}
             for pl in players:
-                count[pl]=list(levelres.values()).count(pl)
-            if count[players[0]] != count[players[1]]:
-                if (count[players[0]]>count[players[1]]):
-                    print("The winner is %s" % players[0])
+                summary[pl]=list(levelres.values()).count(pl)
+            if summary[players[0]] != summary[players[1]]:
+                if (summary[players[0]]>summary[players[1]]):
+                    print("The winner is %s." % players[0])
                 else:
-                    print("The winner is %s" % players[1])
-            else: print("The winner is: no one")
+                    print("The winner is %s." % players[1])
+            else: print("The winner is: no one.")
 
             print("Summary {} rounds".format(len(levelres)))
-            print("{} won {} rounds, and {} won in {} rounds"
-                  .format(players[0],count[players[0]],players[1],count[players[1]]))
+            print("{} won {} rounds, and {} won in {} rounds."
+                  .format(players[0],summary[players[0]],players[1],summary[players[1]]))
 
             #displaying chises
             #preparing structure for weapon statistics
             weapStat = {s: {players[0]: 0, players[1]: 0} for s in signs}
             for res in results:
-                print("Round {:<1} choises: {:<3} choosed {:<9} and {:<3} choosed {:<9}  {} won"
+                print("Round {:<1} choises: {:<3} choosed {:<6} and {:<3} choosed {:<6}  - {} won!"
                       .format(res,players[0],signs[results[res][players[0]]],players[1],signs[results[res][players[1]]],levelres[res]))
 
                 #collecting per player weapon statistics
@@ -85,9 +88,11 @@ def game(levcountr):
             debug(weapStat)
             for weap in weapStat:
                 for player in weapStat[weap]:
-                    print("The weapon {:<9} was used {:<2} times by {:^5}".format(signs[weap],weapStat[weap][player],player ))
+                    if weapStat[weap][player] > 0: #excluding unused weapons
+                        print("The weapon {:<5} was used {:<2} times by {}.".format(signs[weap],weapStat[weap][player],player ))
         printRes(levelres, results)
 
+    #level execution - survey and results collection
     def startlevel(levcountr, players):
         #starting level execution
         print("-=Level %s=-" %levcountr)
@@ -100,19 +105,17 @@ def game(levcountr):
 
         while True:
             userCont = input("Do you want another round? (y/n)")
-            print(userCont.lower()== "y")
-            if userCont.lower() != "y" or userCont.lower() != "n":
-                print("user answer",userCont.lower())
-                break
+            if userCont.lower() not in ("y","n"):
+                continue
             if userCont.lower() == "y":
                 levcountr += 1
                 startlevel(levcountr, players)
+                break
             if userCont.lower() == "n":
-                return
+                break
 
-    #executing level
-    print(levcountr)
-    if levcountr == 0:
+    #executing first level
+    if levcountr == 1:
         startlevel(levcountr, players)
 
     resultParse(results)
