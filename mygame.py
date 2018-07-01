@@ -9,7 +9,6 @@ results={}
 def debug(prn):
     if debugActive:
         print(prn)
-
 #helper for validating entering values
 def appVal(question, valType='str'):
     while True:
@@ -25,7 +24,6 @@ def appVal(question, valType='str'):
                 continue
         if len(val) > 0:
             return val
-
 #game function
 def game():
     #collecting two unique player names
@@ -46,7 +44,6 @@ def game():
     for n in range(1,5):
         startlevel(n,players)
 
-
     def resultParse(results):
         levelres={}
         #return who won in one game turn
@@ -64,7 +61,6 @@ def game():
         #retrieving per level results
         for level in results:
             levelres[level]=retrRes(results[level])
-
         #res analyzing
         def printRes(levelres,results):
             debug(levelres)
@@ -77,8 +73,7 @@ def game():
                     print("The winner is %s" % players[0])
                 else:
                     print("The winner is %s" % players[1])
-            else: print("no one")
-
+            else: print("The winner is no one")
             print("Summary {} rounds".format(len(levelres)))
             print("{} won {} rounds, and {} won in {} rounds"
                   .format(players[0],count[players[0]],players[1],count[players[1]]))
@@ -86,25 +81,14 @@ def game():
             for res in results:
                 print("Round {} choises: {} choosed {} and {} choosed {}, {} won"
                       .format(res,players[0],signs[results[res][players[0]]],players[1],signs[results[res][players[1]]],levelres[res]))
-                #retrieving weapon statistics
-                #{1: {'gopp': 1, 'fopp': 2}, 2: {'gopp': 3, 'fopp': 2}, 3: {'gopp': 3, 'fopp': 2},
-                # 4: {'gopp': 1, 'fopp': 2}}
-
-                for pl in results.values():
-                    print(pl) #Player #weapon
-                    for weap in pl.values():
-                        print("its",pl)
-                        for p in pl:
-                            weapStat[weap][p]+=1
-                        #weapStat[weap][pl]+=1
-
-
-            print(weapStat)
-                    #weapStat[val][players.index(val)] +=1
-
-            #for we in weapStat:
-            #    print("{} was used {} times".format(signs[we], weapStat[we]))
-            #print(results)
+                #collecting per player weapon statistics
+                for pl in players:
+                    plWeap=results[res][pl]
+                    weapStat[plWeap][pl] += 1
+            debug(weapStat)
+            for weap in weapStat:
+                for player in weapStat[weap]:
+                    print("The weapon {} was used {} times by {}".format(signs[weap],weapStat[weap][player],player ))
         printRes(levelres, results)
 
     resultParse(results)
