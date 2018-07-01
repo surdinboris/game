@@ -1,5 +1,6 @@
-
+run = True
 debugActive = False
+levcountr=0
 #won combinations
 wons=((1,3),(2,1),(3,2))
 #defining of signs-identifiers
@@ -26,24 +27,13 @@ def appVal(question, valType='str'):
         if len(val) > 0:
             return val
 #game function
-def game():
+def game(levcountr):
     #collecting two unique player names
     players=[appVal("Please enter first player's name: "),appVal("Please enter second player's name: ")]
     if players[0] == players[1]:
         print("Please enter two different names")
-        return game()
+        return game(levcountr)
 
-    def startlevel(levelnum, players):
-        #starting level execution
-        print("-=Level %s=-" %levelnum)
-        question="{}, please enter your choice: \n1-Rock,  2-Paper, 3-Scissors:\t"
-        #retrieving users choises
-        choises = {pl:int(appVal(question.format(pl), 'int')) for pl in players}
-        #appending results
-        results.update({levelnum:choises})
-
-    for n in range(1,5):
-        startlevel(n,players)
 
     def resultParse(results):
         levelres={}
@@ -62,6 +52,7 @@ def game():
         #retrieving per level results
         for level in results:
             levelres[level]=retrRes(results[level])
+
         #res analyzing
         def printRes(levelres,results):
             debug(levelres)
@@ -97,5 +88,33 @@ def game():
                     print("The weapon {:<9} was used {:<2} times by {:^5}".format(signs[weap],weapStat[weap][player],player ))
         printRes(levelres, results)
 
+    def startlevel(levcountr, players):
+        #starting level execution
+        print("-=Level %s=-" %levcountr)
+        question="{}, please enter your choice: \n1-Rock,  2-Paper, 3-Scissors:\t"
+        #retrieving users choises
+        choises = {pl:int(appVal(question.format(pl), 'int')) for pl in players}
+        #appending results
+        results.update({levcountr:choises})
+       #recursive reexecution
+
+        while True:
+            userCont = input("Do you want another round? (y/n)")
+            print(userCont.lower()== "y")
+            if userCont.lower() != "y" or userCont.lower() != "n":
+                print("user answer",userCont.lower())
+                break
+            if userCont.lower() == "y":
+                levcountr += 1
+                startlevel(levcountr, players)
+            if userCont.lower() == "n":
+                return
+
+    #executing level
+    print(levcountr)
+    if levcountr == 0:
+        startlevel(levcountr, players)
+
     resultParse(results)
-game()
+
+game(levcountr)
